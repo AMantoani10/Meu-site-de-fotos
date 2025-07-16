@@ -17,7 +17,7 @@ function carregarImagens() {
         btnExcluir.textContent = 'Excluir';
         btnExcluir.onclick = () => {
           if(confirm('Deseja excluir essa foto?')) {
-            fetch('https://SEU-BACKEND.onrender.com/excluir', {
+            fetch('https://meu-site-de-fotos.onrender.com/excluir', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ public_id: img.public_id }),
