@@ -61,7 +61,7 @@ enviarBtn.addEventListener('click', () => {
   const formData = new FormData();
   formData.append('arquivo', capturedBlob, 'foto.jpg');
 
-  fetch('https://SEU-BACKEND.onrender.com/upload', {
+  fetch('https://meu-site-de-fotos.onrender.com/upload', {
     method: 'POST',
     body: formData
   })

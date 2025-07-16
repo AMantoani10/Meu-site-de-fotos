@@ -1,40 +1,41 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Galeria de Fotos</title>
-  <link rel="stylesheet" href="style.css">
   <style>
+    body { font-family: Arial, sans-serif; text-align: center; }
     .galeria {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 16px;
+      gap: 15px;
       margin-top: 20px;
     }
-    .foto {
+    .foto-box {
       position: relative;
+      width: 150px;
     }
-    .foto img {
-      width: 200px;
-      border-radius: 10px;
+    .foto-box img {
+      width: 100%;
+      border-radius: 8px;
+      border: 2px solid #ccc;
     }
-    .excluir {
+    .btn-excluir {
       position: absolute;
       top: 5px;
       right: 5px;
-      background: red;
-      color: white;
+      background-color: rgba(255, 0, 0, 0.7);
       border: none;
-      border-radius: 5px;
+      color: white;
+      padding: 5px 10px;
       cursor: pointer;
-      padding: 5px;
-      display: none; /* por padrão escondido, ativaremos depois */
+      border-radius: 5px;
     }
   </style>
 </head>
 <body>
-  <h1>Galeria de Fotos</h1>
+  <h1>Galeria</h1>
   <div class="galeria" id="galeria"></div>
 
   <script src="scriptgaleria.js"></script>
