@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Galeria de Fotos</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .galeria {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .foto {
+      position: relative;
+    }
+    .foto img {
+      width: 200px;
+      border-radius: 10px;
+    }
+    .excluir {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      padding: 5px;
+      display: none; /* por padrão escondido, ativaremos depois */
+    }
+  </style>
+</head>
+<body>
+  <h1>Galeria de Fotos</h1>
+  <div class="galeria" id="galeria"></div>
+
+  <script src="scriptgaleria.js"></script>
+</body>
+</html>
