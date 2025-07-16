@@ -1,7 +1,7 @@
 const galeria = document.getElementById('galeria');
 
 function carregarImagens() {
-  fetch('https://SEU-BACKEND.onrender.com/imagens')
+  fetch('https://meu-site-de-fotos.onrender.com/imagens')
     .then(res => res.json())
     .then(imagens => {
       galeria.innerHTML = ''; // limpa
