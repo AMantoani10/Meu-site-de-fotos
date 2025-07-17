@@ -1,14 +1,4 @@
-// Corrige o 100vh no iOS
-let vh = window.innerHeight * 0.01;
-document.documentElement.style.setProperty('--vh', `${vh}px`);
-
-window.addEventListener('resize', () => {
-  let vh = window.innerHeight * 0.01;
-  document.documentElement.style.setProperty('--vh', `${vh}px`);
-});
-
-
-const video = document.getElementById('video');
+const video = document.getElementById('camera');
 const canvas = document.getElementById('canvas');
 const preview = document.getElementById('preview');
 const captureBtn = document.getElementById('capture-btn');
@@ -16,23 +6,38 @@ const enviarBtn = document.getElementById('send-btn');
 const retakeBtn = document.getElementById('retake-btn');
 
 let capturedBlob = null;
-let cameraAtiva = false;
+let stream = null;
 
-function iniciarCamera() {
-  if (cameraAtiva) return;
-
-  navigator.mediaDevices.getUserMedia({ video: true })
-    .then(stream => {
-      video.srcObject = stream;
-      cameraAtiva = true;
-    })
-    .catch(err => {
-      alert("Erro ao acessar a câmera: " + err.message);
-    });
+// Inicia câmera
+async function iniciarCamera() {
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+    video.srcObject = stream;
+  } catch (err) {
+    alert("Erro ao acessar a câmera: " + err.message);
+  }
 }
 
+// Para a câmera (quando fecha ou muda estado)
+function pararCamera() {
+  if (stream) {
+    stream.getTracks().forEach(track => track.stop());
+    stream = null;
+  }
+}
+
+// Reinicia câmera ao voltar para página
+window.addEventListener('pageshow', (event) => {
+  if (event.persisted || performance.navigation.type === 2) {
+    iniciarCamera();
+  }
+});
+
+iniciarCamera();
+
+// Captura foto
 captureBtn.addEventListener('click', () => {
-  if (!cameraAtiva) {
+  if (!stream) {
     iniciarCamera();
     return;
   }
@@ -50,9 +55,11 @@ captureBtn.addEventListener('click', () => {
     retakeBtn.style.display = 'inline-block';
     video.style.display = 'none';
     captureBtn.style.display = 'none';
+    pararCamera();
   }, 'image/jpeg');
 });
 
+// Retirar outra foto
 retakeBtn.addEventListener('click', () => {
   preview.style.display = 'none';
   enviarBtn.style.display = 'none';
@@ -60,8 +67,10 @@ retakeBtn.addEventListener('click', () => {
   video.style.display = 'block';
   captureBtn.style.display = 'inline-block';
   capturedBlob = null;
+  iniciarCamera();
 });
 
+// Enviar foto
 enviarBtn.addEventListener('click', () => {
   if (!capturedBlob) {
     alert('Nenhuma imagem para enviar!');
@@ -79,7 +88,7 @@ enviarBtn.addEventListener('click', () => {
   .then(data => {
     if (data.url) {
       alert("Imagem enviada com sucesso!");
-      window.location.href = "galeria.html"; // redireciona para a galeria
+      window.location.href = "galeria.html";
     } else {
       alert("Erro no envio: " + data.erro);
     }

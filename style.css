@@ -1,47 +1,75 @@
+/* Reseta estilos básicos */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   text-align: center;
   font-family: Arial, sans-serif;
   background-color: #f3f3f3;
   padding: 20px;
-  margin: 0;
-  overflow: hidden;
-
 }
 
-#preview {
-  width: 90%;
-  max-width: 400px;
-  border: 4px solid #333;
+h1 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* Contêiner da câmera */
+.tela-camera {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  background-color: black;
   border-radius: 8px;
-  margin-top: 10px;
+  overflow: hidden;
 }
+
+/* Vídeo ocupando toda a tela */
 video {
   width: 100%;
-  height: 100%;
+  height: auto;
   object-fit: cover;
-  border-radius: 8px;
+  display: block;
 }
 
-.tela-camera {
-  height: calc(var(--vh, 1vh) * 100);
+/* Preview da foto */
+#preview {
   width: 100%;
+  max-width: 480px;
+  border: 4px solid #333;
+  border-radius: 8px;
+  margin: 15px auto;
+  display: block;
+}
+
+/* Botões */
+.botoes {
+  margin-top: 20px;
 }
 
 button {
   margin: 10px;
-  padding: 12px 24px;
-  font-size: 16px;
+  padding: 14px 28px;
+  font-size: 18px;
+  font-weight: bold;
   border: none;
   background-color: #333;
   color: white;
   border-radius: 8px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
   background-color: #555;
 }
 
-.botoes {
-  margin-top: 20px;
+/* Ajuste para iPhone: evitar rolagem indesejada */
+html, body {
+  height: 100%;
+  overflow: hidden;
 }
