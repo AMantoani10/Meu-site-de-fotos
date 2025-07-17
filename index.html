@@ -1,21 +1,19 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>Tire sua Foto!</title>
-  <link rel="stylesheet" href="style.css">
-</head>
+<!-- index.html -->
 <body>
-  <h1>Envie sua foto!</h1>
+  <h1>Tire sua Foto!</h1>
 
-<input type="file" id="upload" accept="image/*" multiple>
-<br><br>
-<img id="preview" style="display:none; max-width:90%; border: 2px solid #333; border-radius: 8px;" />
-<br>
-<button id="send-btn" style="display:none;">Enviar</button>
+  <div class="tela-camera">
+    <video id="camera" autoplay></video>
+    <canvas id="canvas" style="display:none;"></canvas>
+  </div>
 
+  <img id="preview" style="display:none;" />
+  
+  <div class="botoes">
+    <button id="capture-btn">📸 Capturar</button>
+    <button id="retake-btn" style="display:none;">↩ Refazer</button>
+    <button id="send-btn" style="display:none;">✅ Enviar</button>
+  </div>
 
   <script src="script.js"></script>
 </body>
-</html>

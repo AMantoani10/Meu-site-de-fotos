@@ -1,46 +1,34 @@
-const input = document.getElementById('upload');
-const preview = document.getElementById('preview');
-const enviarBtn = document.getElementById('send-btn');
-let selectedFile = null;
+const galeria = document.getElementById('galeria');
 
-input.addEventListener('change', (e) => {
-  if (e.target.files.length > 0) {
-    selectedFile = e.target.files[0];
+async function carregarGaleria() {
+  try {
+    const resposta = await fetch('https://meu-site-de-fotos.onrender.com/imagens');
+    const imagens = await resposta.json();
 
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      preview.src = e.target.result;
-      preview.style.display = 'block';
-      enviarBtn.style.display = 'inline-block';
-    };
-    reader.readAsDataURL(selectedFile);
+    galeria.innerHTML = '';
+    imagens.forEach(img => {
+      const div = document.createElement('div');
+      div.className = 'foto-box';
+      div.innerHTML = `
+        <img src="${img.url}" alt="foto" />
+        <button class="btn-excluir" onclick="excluirImagem('${img.public_id}')">X</button>
+      `;
+      galeria.appendChild(div);
+    });
+  } catch (err) {
+    console.error("Erro ao carregar galeria:", err);
   }
-});
+}
 
-enviarBtn.addEventListener('click', () => {
-  if (!selectedFile) {
-    alert('Nenhuma imagem selecionada!');
-    return;
-  }
+async function excluirImagem(id) {
+  if (!confirm("Tem certeza que deseja excluir?")) return;
 
-  const formData = new FormData();
-  formData.append('arquivo', selectedFile, selectedFile.name);
-
-  fetch('https://meu-site-de-fotos.onrender.com/upload', {
+  await fetch('https://meu-site-de-fotos.onrender.com/excluir', {
     method: 'POST',
-    body: formData
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.url) {
-      alert("Imagem enviada com sucesso!");
-      window.location.href = "galeria.html"; // Redireciona
-    } else {
-      alert("Erro no envio: " + data.erro);
-    }
-  })
-  .catch(error => {
-    console.error("Erro ao enviar:", error);
-    alert("Erro ao enviar imagem.");
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ public_id: id })
   });
-});
+  carregarGaleria();
+}
+
+carregarGaleria();
