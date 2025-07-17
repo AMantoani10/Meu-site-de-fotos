@@ -7,20 +7,14 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Deixe sua lembrança!</h1>
+  <h1>Envie sua foto!</h1>
 
-  <div class="tela-camera">
-    <video id="camera" autoplay playsinline muted></video>
-  </div>
+<input type="file" id="upload" accept="image/*" multiple>
+<br><br>
+<img id="preview" style="display:none; max-width:90%; border: 2px solid #333; border-radius: 8px;" />
+<br>
+<button id="send-btn" style="display:none;">Enviar</button>
 
-  <canvas id="canvas" style="display:none;"></canvas>
-  <img id="preview" style="display:none;" />
-
-  <div class="botoes">
-    <button id="capture-btn">Tirar Foto</button>
-    <button id="retake-btn" style="display:none;">Tirar Novamente</button>
-    <button id="send-btn" style="display:none;">Enviar</button>
-  </div>
 
   <script src="script.js"></script>
 </body>

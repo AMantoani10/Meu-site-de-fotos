@@ -1,46 +1,46 @@
-const galeria = document.getElementById('galeria');
+const input = document.getElementById('upload');
+const preview = document.getElementById('preview');
+const enviarBtn = document.getElementById('send-btn');
+let selectedFile = null;
 
-function carregarImagens() {
-  fetch('https://meu-site-de-fotos.onrender.com/imagens')
-    .then(res => res.json())
-    .then(imagens => {
-      galeria.innerHTML = ''; // limpa
-      imagens.forEach(img => {
-        const div = document.createElement('div');
-        div.classList.add('foto-box');
+input.addEventListener('change', (e) => {
+  if (e.target.files.length > 0) {
+    selectedFile = e.target.files[0];
 
-        const image = document.createElement('img');
-        image.src = img.url;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      preview.src = e.target.result;
+      preview.style.display = 'block';
+      enviarBtn.style.display = 'inline-block';
+    };
+    reader.readAsDataURL(selectedFile);
+  }
+});
 
-        const btnExcluir = document.createElement('button');
-        btnExcluir.classList.add('btn-excluir');
-        btnExcluir.textContent = 'Excluir';
-        btnExcluir.onclick = () => {
-          if(confirm('Deseja excluir essa foto?')) {
-            fetch('https://meu-site-de-fotos.onrender.com/excluir', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ public_id: img.public_id }),
-            })
-            .then(res => res.json())
-            .then(data => {
-              if (data.mensagem) {
-                alert(data.mensagem);
-                carregarImagens(); // recarrega após exclusão
-              } else {
-                alert('Erro: ' + (data.erro || 'Não foi possível excluir'));
-              }
-            })
-            .catch(() => alert('Erro na requisição de exclusão'));
-          }
-        };
+enviarBtn.addEventListener('click', () => {
+  if (!selectedFile) {
+    alert('Nenhuma imagem selecionada!');
+    return;
+  }
 
-        div.appendChild(image);
-        div.appendChild(btnExcluir);
-        galeria.appendChild(div);
-      });
-    })
-    .catch(() => alert('Erro ao carregar imagens'));
-}
+  const formData = new FormData();
+  formData.append('arquivo', selectedFile, selectedFile.name);
 
-window.onload = carregarImagens;
+  fetch('https://meu-site-de-fotos.onrender.com/upload', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.url) {
+      alert("Imagem enviada com sucesso!");
+      window.location.href = "galeria.html"; // Redireciona
+    } else {
+      alert("Erro no envio: " + data.erro);
+    }
+  })
+  .catch(error => {
+    console.error("Erro ao enviar:", error);
+    alert("Erro ao enviar imagem.");
+  });
+});
